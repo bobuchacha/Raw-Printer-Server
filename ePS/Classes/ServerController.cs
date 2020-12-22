@@ -23,10 +23,7 @@ namespace ePS.Classes
         //public static List<Client> Clients = new List<Client>();
 
         // private variables
-        //static Server WebSocketServer;
-        static Thread PrintServerThread;
         static WebSocketServer WSSServer;
-        static HttpServer MainServer;
 
         public static void LogInfo(string str)
         {
@@ -59,6 +56,7 @@ namespace ePS.Classes
             WSSServer.Log.Level = LogLevel.Warn;
 
             WSSServer.AddWebSocketService<ePS.Classes.WebSocketServerControllers.RawPrinterDirect>("/");                       // default, legacy module
+            WSSServer.AddWebSocketService<ePS.Classes.WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
             WSSServer.Log.Debug("Server started");
             WSSServer.KeepClean = false;
         }
