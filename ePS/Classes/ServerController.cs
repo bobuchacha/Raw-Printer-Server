@@ -24,6 +24,7 @@ namespace ePS.Classes
 
         // private variables
         static WebSocketServer WSSServer;
+        static HttpServer httpServer;
 
         public static void LogInfo(string str)
         {
@@ -55,21 +56,37 @@ namespace ePS.Classes
             WSSServer.Log.File = "log.txt";
             WSSServer.Log.Level = LogLevel.Warn;
 
-            WSSServer.AddWebSocketService<ePS.Classes.WebSocketServerControllers.RawPrinterDirect>("/");                       // default, legacy module
-            WSSServer.AddWebSocketService<ePS.Classes.WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
+            WSSServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/");                       // default, legacy module
+            WSSServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/raw-printers");           // compatibility to legacy standalone print server
+            WSSServer.AddWebSocketService<WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
             WSSServer.Log.Debug("Server started");
             WSSServer.KeepClean = false;
+
+
+            httpServer = new HttpServer(IPAddress.Any, Convert.ToInt16(Config.PrintServerPort));
+            httpServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/");                       // default, legacy module
+            httpServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/raw-printers");           // compatibility to legacy standalone print server
+            httpServer.AddWebSocketService<WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
+
+            httpServer.Log.File = "http_log.txt";
+            httpServer.Log.Level = LogLevel.Debug;
+            httpServer.Log.Debug("Web Server started");
+            httpServer.KeepClean = false;
+
+            httpServer.OnGet += ePS.Classes.HttpControllers.GET.Handle;
+            httpServer.OnPost += ePS.Classes.HttpControllers.POST.Handle;
         }
+
 
         public static void StartPrintServer()
         {
             isPrintServerStarted = true;
-            WSSServer.Start();
+            httpServer.Start();
         }
         public static void StopPrintServer()
         {
             isPrintServerStarted = false;
-            WSSServer.Stop();
+            httpServer.Stop();
         }
 
 
@@ -109,8 +126,8 @@ namespace ePS.Classes
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Error: ");
-                    Console.WriteLine(e.ToString());
+                    //Console.WriteLine("Error: ");
+                   // Console.WriteLine(e.ToString());
                 }
 
 

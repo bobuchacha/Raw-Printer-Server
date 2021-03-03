@@ -13,7 +13,7 @@ namespace ePS.Classes
         public const string INI_FILE_NAME = "PrintServer.ini";
         public const string INI_PRINTER_SECTION = "Printer";
         public const string INI_SERVER_SECTION = "Server";
-        public const string SM_DEFAULT_PRINTER_PORT = "8123";
+        public const string SM_DEFAULT_PRINTER_PORT = "8100";
         public const string SM_DEFAULT_WEB_SERVER_PORT = "8080";
 
         // Ini Key name

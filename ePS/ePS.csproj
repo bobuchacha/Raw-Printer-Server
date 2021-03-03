@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8D828562-B69E-487B-B6DD-8BB6644B8AFD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ePS</RootNamespace>
     <AssemblyName>ePS</AssemblyName>
@@ -32,11 +32,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Designbolts-Free-Multimedia-Printer.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,10 +53,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Config.cs" />
+    <Compile Include="Classes\HttpControllers\GET.cs" />
+    <Compile Include="Classes\HttpControllers\POST.cs" />
+    <Compile Include="Classes\HttpControllers\Utility.cs" />
     <Compile Include="Classes\INIParser.cs" />
     <Compile Include="Classes\ProgramArgumentHelper.cs" />
     <Compile Include="Classes\RawPrinterHelper.cs" />
     <Compile Include="Classes\ServerController.cs" />
+    <Compile Include="Classes\TrayIcon.cs" />
     <Compile Include="Classes\URISchemaHelper.cs" />
     <Compile Include="Classes\WebSocketServerControllers\RawPrinterDirect.cs" />
     <Compile Include="Classes\WebSocketServerControllers\Utility.cs" />
@@ -138,6 +149,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\Struct\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="3d-printer-multi-size.ico" />
+    <Content Include="Designbolts-Free-Multimedia-Printer.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
