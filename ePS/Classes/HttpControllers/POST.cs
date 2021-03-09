@@ -15,6 +15,7 @@ namespace ePS.Classes.HttpControllers
 
         public static void Handle(object sender, HttpRequestEventArgs e)
         {
+            Console.WriteLine(e.Request.Url.LocalPath.ToLower());
             switch (e.Request.Url.LocalPath.ToLower())
             {
                 case "/print":
@@ -26,6 +27,8 @@ namespace ePS.Classes.HttpControllers
                     break;
             }
         }
+
+
 
         private static void ProceedPrintRequest(HttpRequestEventArgs e)
         {

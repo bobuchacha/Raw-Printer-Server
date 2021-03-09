@@ -28,19 +28,19 @@ namespace ePS.Classes
 
         public static void LogInfo(string str)
         {
-            WSSServer.Log.Info(str);
+            httpServer.Log.Info(str);
         }
         public static void LogDebug(string str)
         {
-            WSSServer.Log.Debug(str);
+            httpServer.Log.Debug(str);
         }
         public static void LogWarn(string str)
         {
-            WSSServer.Log.Warn(str);
+            httpServer.Log.Warn(str);
         }
         public static void LogError(string str)
         {
-            WSSServer.Log.Error(str);
+            httpServer.Log.Error(str);
         }
 
         public static void Initialize()
@@ -52,7 +52,7 @@ namespace ePS.Classes
         public static void InitializePrintServer()
         {
 
-            WSSServer = new WebSocketServer(IPAddress.Any, Convert.ToInt16(Config.PrintServerPort));
+           /* WSSServer = new WebSocketServer(IPAddress.Any, Convert.ToInt16(Config.PrintServerPort));
             WSSServer.Log.File = "log.txt";
             WSSServer.Log.Level = LogLevel.Warn;
 
@@ -61,14 +61,14 @@ namespace ePS.Classes
             WSSServer.AddWebSocketService<WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
             WSSServer.Log.Debug("Server started");
             WSSServer.KeepClean = false;
-
+           */
 
             httpServer = new HttpServer(IPAddress.Any, Convert.ToInt16(Config.PrintServerPort));
             httpServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/");                       // default, legacy module
             httpServer.AddWebSocketService<WebSocketServerControllers.RawPrinterDirect>("/raw-printers");           // compatibility to legacy standalone print server
             httpServer.AddWebSocketService<WebSocketServerControllers.Utility>("/utility");                 // utility to access system wise function such as list printers name, etc.
 
-            httpServer.Log.File = "http_log.txt";
+            httpServer.Log.File = "log.txt";
             httpServer.Log.Level = LogLevel.Debug;
             httpServer.Log.Debug("Web Server started");
             httpServer.KeepClean = false;

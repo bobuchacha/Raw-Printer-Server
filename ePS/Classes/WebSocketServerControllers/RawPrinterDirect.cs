@@ -8,6 +8,7 @@ using WebSocketSharp.Server;
 using System.Diagnostics;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
 
 namespace ePS.Classes.WebSocketServerControllers
 {
@@ -94,14 +95,40 @@ namespace ePS.Classes.WebSocketServerControllers
         #endregion
 
 
-        #region Private methods
+        #region Private 
+
+
+        private string getDefaultReceiptPrinterName()
+        {
+            
+            string szReturn = null;
+
+            foreach (string printer in PrinterSettings.InstalledPrinters)
+            {
+                if (printer.ToLower().IndexOf("receipt") > -1 || printer.ToLower().IndexOf("thermal") > -1)
+                {
+                    szReturn = printer;
+                    break;
+                }
+            }
+
+            return szReturn;
+        }
+
         /// <summary>
         /// Get MachineID during connection set by QueryString mid
         /// </summary>
         /// <returns></returns>
         private string getPrinterName()
         {
-            return Context.QueryString["mid"];
+            string _pname = Context.QueryString["mid"];
+            
+            if (_pname == null || _pname == "")
+            {
+                _pname = getDefaultReceiptPrinterName();
+            }
+
+            return _pname;
         }
         #endregion
 
@@ -110,8 +137,11 @@ namespace ePS.Classes.WebSocketServerControllers
         protected override void OnOpen()
         {
             _printerName = getPrinterName();
+
             this.Send("Embeded Print Server connected. Printer [" + _printerName + "]");
+
             ServerController.LogDebug("New RawPrinterDirect established to " + _printerName);
+
             myPrinter = new RawPrinterHelper();
         }
 
@@ -122,6 +152,8 @@ namespace ePS.Classes.WebSocketServerControllers
 
         protected override void OnMessage(MessageEventArgs e)
         { 
+           
+
             if (_printerName == null || _printerName == "")
             {
                 this.Send("Failed. Printer is not specified.");
