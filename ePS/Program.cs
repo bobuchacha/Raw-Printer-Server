@@ -118,12 +118,12 @@ namespace ePS
 
             notifyThread.Start();
 
-            string command = Console.ReadLine();
-             while (command != "exit")
-              {
-                  command = Console.ReadLine();
-              }
-            mnuExit_Click(null, null);
+            //string command = Console.ReadLine();
+            // while (command != "exit")
+              //{
+               //   command = Console.ReadLine();
+              //}
+           // mnuExit_Click(null, null);
         }
 
         static void mnuExit_Click(object sender, EventArgs e)
